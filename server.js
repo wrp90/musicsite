@@ -16,6 +16,7 @@ app.get('/', (req, res) => {
     `<div> 
         <h1>Music Page</h1>
         <h2>Welcome to our music page</h2>
+        <h2>Our band of choice is Tool</h2>
         <img src="/images/tool.jpg" style="display:block" width=600/>
         <br>
         <br>
@@ -46,14 +47,19 @@ app.get('/albums/:name', (req, res) => {
     const albumData = db.find(album => {
         return album.name == name;
     })
-    console.log(albumData);
+    const songTitles = albumData.songTitles.map((song) => {
+        return `<li>${song}</li>`
+    })
     const htmlData =
     `<div> 
         <h1>Album Info</h1>
         <ul>
             <h2>${albumData.name}</h2>
             <li>Release Date: ${albumData.publishDate}</li>
-            <img src="/images${albumData.imgURL}" style="display:block" width=600/>
+            <h2>Songs:</h2>
+            <ul>${songTitles.join('')}</ul>
+            <br>
+            <img src="/images${albumData.imgURL}" style="display:block" width=400/>
         </ul>
     </div>`;
 
