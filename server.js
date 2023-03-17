@@ -7,39 +7,51 @@ const port = 3000;
 const express = require('express');
 const app = express();
 
+const es6Renderer = require('express-es6-template-engine');
+app.engine('html', es6Renderer);
+app.set('views', 'templates');
+app.set('view engine', 'html');
+
 const server = http.createServer(app);
 
 app.use(express.static('public'));
 
 app.get('/', (req, res) => {
-    const htmlData =
-    `<div> 
-        <h1>Music Page</h1>
-        <h2>Welcome to our music page</h2>
-        <h2>Our band of choice is Tool</h2>
-        <img src="/images/tool.jpg" style="display:block" width=600/>
-        <br>
-        <br>
-        <a href="/albums">Albums</a>
-    </div>`;
+    // const htmlData =
+    // `<div> 
+    //     <h1>Music Page</h1>
+    //     <h2>Welcome to our music page</h2>
+    //     <h2>Our band of choice is Tool</h2>
+    //     <img src="/images/tool.jpg" style="display:block" width=600/>
+    //     <br>
+    //     <br>
+    //     <a href="/albums">Albums</a>
+    // </div>`;
 
-    res.send(htmlData);
+    // res.send(htmlData);
+    res.render('home');
 });
 
 app.get('/albums', (req, res) => {
-    const list = db
-    .map((album, index) => {
-        return `<li><a href="/albums/${album.name}">${album.name}</a></li>`
-    })
-    const htmlData =
-    `<div> 
-        <h1>Albums Page</h1>
-        <ul>
-            ${list.join('')}
-        </ul>
-    </div>`;
+    // const list = db
+    // .map((album, index) => {
+    //     return `<li><a href="/albums/${album.name}">${album.name}</a></li>`
+    // })
+    // const htmlData =
+    // `<div> 
+    //     <h1>Albums Page</h1>
+    //     <ul>
+    //         ${list.join('')}
+    //     </ul>
+    // </div>`;
 
-    res.send(htmlData);
+    res.render('albums', {
+        locals: {
+            albums: db,
+        },
+    });
+
+    // res.send(htmlData);
 });
 
 app.get('/albums/:name', (req, res) => {
@@ -64,6 +76,11 @@ app.get('/albums/:name', (req, res) => {
     </div>`;
 
     res.send(htmlData);
+    // res.render('albuminfo', {
+    //     locals: {
+    //         songs: db,
+    //     },
+    // });
 });
 
 server.listen(port, hostname, () => {
